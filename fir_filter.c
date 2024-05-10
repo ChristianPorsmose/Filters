@@ -27,7 +27,7 @@ double FIRFILTER_Update(FIRFilter *fil, double input, double *iresp) {
         else {
             shift = FIR_FILTER_LENGTH - 1;
         }
-        out += iresp[fil->bufIndex] * fil->buf[shift]; 
+        out += iresp[i] * fil->buf[shift]; 
     }
     return out;
 }
