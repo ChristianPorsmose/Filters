@@ -2,8 +2,9 @@
 #include "noise.h"
 #include <stdio.h>
 #include "iir_filter.h"
-
-
+#include "numerator_coeffs.h"
+#include "denominator_coeffs.h"
+#define NUM_FILTERS 6
 
 
 // void HOLD() {
@@ -42,44 +43,34 @@
 int main() {
     int num_samples = SAMPLE_RATE * DURATION;
     double *noise_signal = (double *)malloc(num_samples * sizeof(double));
-    
-
-
-    double a[] = {-0.747789178258503, 0.272214937925007};
-    double b[] = {0.131106439916626, 0.262212879833252, 0.131106439916626};
-
-    SecondOrderIIR *fil = (SecondOrderIIR*)malloc(sizeof(SecondOrderIIR));
-    SecondOrderIIR_Init(fil, b,a);
-
-    if (noise_signal == NULL) {
+    if (noise_signal == NULL) return 1;
+    //create filters
+    SecondOrderIIR **fil = (SecondOrderIIR **)malloc(NUM_FILTERS * sizeof(SecondOrderIIR *));
+    if (fil == NULL) {
         fprintf(stderr, "Memory allocation failed\n");
         return 1;
     }
 
-   
+    for (int i = 0; i < NUM_FILTERS; i++) {
+        fil[i] = (SecondOrderIIR *)malloc(sizeof(SecondOrderIIR));
+        if (fil[i] == NULL) return 1;
+        SecondOrderIIR_Init(fil[i], numerator_coeffs[i], denominator_coeffs[i]);
+    }
 
     generate_noise(noise_signal, num_samples);
 
     //create output signal
     double *output_signal = (double *)malloc(num_samples * sizeof(double));
-    if (output_signal == NULL) {
-        fprintf(stderr, "Memory allocation failed\n");
-        return 1;
-    }
+    if (output_signal == NULL) return 1;
 
      //Apply the filter to the noise signal
     for (int i = 0; i < num_samples; i++) {
-        //printf("%f", noise_signal[i]);
-        output_signal[i] = SecondOrderIIR_Update(fil, noise_signal[i]);
+        output_signal[i] = NOrderIIR_Update(fil, noise_signal[i], NUM_FILTERS);
     }
-
 
     //write input and output signals to file
     FILE *f = fopen("iir_in.dat", "w+");
-    if (f == NULL) {
-        fprintf(stderr, "Error opening file\n");
-        return 1;
-    }
+    if (f == NULL) return 1;
     for (int i = 0; i < num_samples; i++) {
         fprintf(f, "%f\n", noise_signal[i]);
     
@@ -87,16 +78,16 @@ int main() {
     fclose(f);
 
     f = fopen("iir_out.dat", "w+");
-    if (f == NULL) {
-        fprintf(stderr, "Error opening file\n");
-        return 1;
-    }
+    if (f == NULL) return 1;
     for (int i = 0; i < num_samples; i++) {
         fprintf(f, "%f\n", output_signal[i]);
     }
 
 
-    free(fil);    
+    //free memory
+    for (int i = 0; i < NUM_FILTERS; i++) {
+        free(fil[i]);
+    }  
     fclose(f);
     free(output_signal);
     free(noise_signal);

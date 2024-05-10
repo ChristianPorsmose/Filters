@@ -11,7 +11,8 @@ double rand_double() {
 
 void generate_noise(double *noise_signal, int nsamples) {
     for (int i = 0; i < nsamples; i++) {
-        noise_signal[i] = 0.5 * sin(2 * M_PI * 1000 * i / SAMPLE_RATE) + 0.5 * rand_double();
+        noise_signal[i] = 10*cos(i);
+        //printf("%f\n", noise_signal[i]);
     }
 }
 

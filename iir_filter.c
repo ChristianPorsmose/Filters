@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 void SecondOrderIIR_Init(SecondOrderIIR *fil, double *b, double *a) {
+    printf("Init\n");
     memcpy(fil->a, a, IIR_POLES * sizeof(double));
     memcpy(fil->b , b, IIR_ZEROES * sizeof(double));
     fil->bufIndex = 0;
@@ -15,7 +16,6 @@ void SecondOrderIIR_Init(SecondOrderIIR *fil, double *b, double *a) {
 double SecondOrderIIR_Update(SecondOrderIIR *fil, double inp) {
     int shift1 = fil->bufIndex;
     
-
     //formula 9.18
     for(int i = 1; i < IIR_POLES; i++) {
         fil->buf[fil->bufIndex] += -1*fil->a[i] * fil->buf[shift1] + inp;
@@ -42,7 +42,7 @@ double SecondOrderIIR_Update(SecondOrderIIR *fil, double inp) {
             shift2 = IIR_ZEROES - 1;
         }
     }
-
+    
     //update buffer
     fil->bufIndex++;
     if (fil->bufIndex == IIR_POLES) {
@@ -50,5 +50,21 @@ double SecondOrderIIR_Update(SecondOrderIIR *fil, double inp) {
     }
 
 
+    return out;
+}
+
+
+void NOrderIIR_Init(SecondOrderIIR **fil, double **b, double **a, int order) {
+    for(int i = 0; i < order; i++) {
+        SecondOrderIIR_Init(fil[i], b[i], a[i]);
+    }
+}
+
+
+double NOrderIIR_Update(SecondOrderIIR **fil, double inp, int order) {
+    double out = 0;
+    for(int i = 0; i < order; i++) {
+        out += SecondOrderIIR_Update(fil[i], inp);
+    }
     return out;
 }
