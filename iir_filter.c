@@ -2,6 +2,16 @@
 #include "iir_filter.h"
 #include <stdio.h>
 
+void FirstOrderIIR_Init(FirstOrderIIR *fil, double a) {
+    fil->a = a;
+    fil->out = 0.0;
+}
+
+double FirstOrderIIR_Update(FirstOrderIIR *fil, double inp) {
+    fil->out = fil->a*fil->out + (1-fil->a)*inp;
+    return fil->out;
+}
+
 void SecondOrderIIR_Init(SecondOrderIIR *fil, double *b, double *a) {
     memcpy(fil->a, a, IIR_POLES * sizeof(double));
     memcpy(fil->b , b, IIR_ZEROES * sizeof(double));

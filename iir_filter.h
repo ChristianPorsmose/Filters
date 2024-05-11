@@ -15,6 +15,14 @@ typedef struct
     
 }SecondOrderIIR;
 
+typedef struct
+{
+    double out;
+    double a;
+}FirstOrderIIR;
+
+void FirstOrderIIR_Init(FirstOrderIIR *fil, double a);
+double FirstOrderIIR_Update(FirstOrderIIR *fil, double inp);
 void SecondOrderIIR_Init(SecondOrderIIR *fil, double *b, double *a);
 double SecondOrderIIR_Update(SecondOrderIIR *fil, double inp);
 double NOrderIIR_Update(SecondOrderIIR **fil, double inp, int order); 

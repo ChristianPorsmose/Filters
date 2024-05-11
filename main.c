@@ -47,14 +47,14 @@ int main() {
     generate_noise(noise_signal, num_samples);
 
     //create filters array
-    SecondOrderIIR **fil = (SecondOrderIIR **)malloc(NUM_FILTERS * sizeof(SecondOrderIIR *));
-    if (fil == NULL) {return 1;}
+    // SecondOrderIIR **fil = (SecondOrderIIR **)malloc(NUM_FILTERS * sizeof(SecondOrderIIR *));
+    // if (fil == NULL) {return 1;}
 
-    for (int i = 0; i < NUM_FILTERS; i++) {
-        fil[i] = (SecondOrderIIR *)malloc(sizeof(SecondOrderIIR));
-        if (fil[i] == NULL) return 1;
-        SecondOrderIIR_Init(fil[i], numerator_coeffs[i], denominator_coeffs[i]);
-    }
+    // for (int i = 0; i < NUM_FILTERS; i++) {
+    //     fil[i] = (SecondOrderIIR *)malloc(sizeof(SecondOrderIIR));
+    //     if (fil[i] == NULL) return 1;
+    //     SecondOrderIIR_Init(fil[i], numerator_coeffs[i], denominator_coeffs[i]);
+    // }
 
     //create a simple second order IIR filter
     // SecondOrderIIR *fil = (SecondOrderIIR *)malloc(sizeof(SecondOrderIIR));
@@ -86,13 +86,23 @@ int main() {
 //     }
 
      //Apply the filter to the noise signal
-    for (int i = 0; i < num_samples; i++) {
-        output_signal[i] = NOrderIIR_Update(fil, noise_signal[i], NUM_FILTERS);
-    }
+    // for (int i = 0; i < num_samples; i++) {
+    //     output_signal[i] = NOrderIIR_Update(fil, noise_signal[i], NUM_FILTERS);
+    // }
 
     // for (int i = 0; i < num_samples; i++) {
     //     output_signal[i] = SecondOrderIIR_Update(fil, noise_signal[i]);
     // }
+
+
+    //first order IIR filter
+    FirstOrderIIR *fil = (FirstOrderIIR *)malloc(sizeof(FirstOrderIIR));
+    if (fil == NULL) return 1;
+    FirstOrderIIR_Init(fil, 0.3);
+    for (int i = 0; i < num_samples; i++) {
+        output_signal[i] = FirstOrderIIR_Update(fil, noise_signal[i]);
+    }
+
 
     //write input and output signals to file
     FILE *f = fopen("iir_in.dat", "w+");
@@ -109,12 +119,11 @@ int main() {
 
 
     //free array memory
-    for (int i = 0; i < NUM_FILTERS; i++) {
-        free(fil[i]);
-    }  
+    // for (int i = 0; i < NUM_FILTERS; i++) {
+    //     free(fil[i]);
+    // }  
 
     free(fil);
-    
     free(output_signal);
     free(noise_signal);
     return 0;
