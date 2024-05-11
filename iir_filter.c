@@ -23,11 +23,11 @@ void SecondOrderIIR_Init(SecondOrderIIR *fil, double *b, double *a) {
 
 double SecondOrderIIR_Update(SecondOrderIIR *fil, double inp) {
     //formula 9.18
-    fil->buf[fil->bufIndex] = (-1*fil->a[0]*fil->buf[fil->bufIndex] + -1*fil->a[1]*fil->buf[(fil->bufIndex+1)%IIR_ZEROES]) - inp; 
+    fil->buf[fil->bufIndex] = (fil->a[0]*fil->buf[fil->bufIndex] + inp + fil->a[1]*fil->buf[(fil->bufIndex+1)%IIR_ZEROES] + inp); //-a???
     //formula 9.20
     double out = fil->buf[fil->bufIndex]*fil->b[0] + fil->buf[(fil->bufIndex+1)%IIR_ZEROES]*fil->b[1] + fil->buf[(fil->bufIndex+2)%IIR_ZEROES]*fil->b[2];
     //update buf + check for bounds
-    fil->bufIndex = (fil->bufIndex < 0) ? fil->bufIndex=IIR_ZEROES-1 : fil->bufIndex-1;
+    fil->bufIndex = (fil->bufIndex == 0) ? fil->bufIndex=IIR_ZEROES-1 : fil->bufIndex-1;
     return out;
 }
 
