@@ -17,7 +17,7 @@ typedef struct
 
 void SecondOrderIIR_Init(SecondOrderIIR *fil, double *b, double *a);
 double SecondOrderIIR_Update(SecondOrderIIR *fil, double inp);
-double NOrderIIR_Update(SecondOrderIIR **fil, double inp, int order); //list of filters
+double NOrderIIR_Update(SecondOrderIIR **fil, double inp, int order); 
 void NOrderIIR_Init(SecondOrderIIR **fil, double **b, double **a, int order);
 
 #endif
