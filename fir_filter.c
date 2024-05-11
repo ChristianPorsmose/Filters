@@ -13,16 +13,12 @@ double FIRFILTER_Update(FIRFilter *fil, double input, double *iresp) {
     fil->buf[fil->bufIndex] = input;
 
     //increment buf + check for bounds
-    fil->bufIndex++;
-    if (fil->bufIndex == FIR_FILTER_LENGTH) {
-        fil->bufIndex = 0;
-    }
-    int shift = fil->bufIndex;
+    fil->bufIndex = (fil->bufIndex < 0) ? fil->bufIndex=FIR_FILTER_LENGTH-1 : fil->bufIndex-1;
+
     double out = 0.0;
     //convolve 
     for (int i=0; i < FIR_FILTER_LENGTH; i++) {
-        shift = (shift > 0) ? shift - 1 : FIR_FILTER_LENGTH - 1;
-        out += iresp[i] * fil->buf[shift]; 
+        out += iresp[i] * fil->buf[(fil->bufIndex+1)%FIR_FILTER_LENGTH]; 
     }
     return out;
 }

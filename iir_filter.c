@@ -12,16 +12,12 @@ void SecondOrderIIR_Init(SecondOrderIIR *fil, double *b, double *a) {
 }
 
 double SecondOrderIIR_Update(SecondOrderIIR *fil, double inp) {
-    int shift = fil->bufIndex;
-    shift = (shift > 0) ? shift - 1 : IIR_ZEROES - 1;
     //formula 9.18
-    fil->buf[fil->bufIndex] = (-fil->a[0]*fil->buf[fil->bufIndex] - fil->a[1]*fil->buf[shift]) + inp; 
-    int shift2 = (shift > 0) ? shift - 1 : IIR_ZEROES - 1;
+    fil->buf[fil->bufIndex] = (-fil->a[0]*fil->buf[fil->bufIndex] - fil->a[1]*fil->buf[(fil->bufIndex+1)%IIR_ZEROES]) + inp; 
     //formula 9.20
-    double out = fil->buf[fil->bufIndex]*fil->b[0] + fil->buf[shift]*fil->b[1] + fil->buf[shift2]*fil->b[2];
-   
+    double out = fil->buf[fil->bufIndex]*fil->b[0] + fil->buf[(fil->bufIndex+1)%IIR_ZEROES]*fil->b[1] + fil->buf[(fil->bufIndex+2)%IIR_ZEROES]*fil->b[2];
     //update buf + check for bounds
-    fil->bufIndex = (fil->bufIndex + 1) % IIR_ZEROES;
+    fil->bufIndex = (fil->bufIndex < 0) ? fil->bufIndex=IIR_ZEROES-1 : fil->bufIndex-1;
     return out;
 }
 
