@@ -3,7 +3,7 @@ order = 12;
 fc = 800;
 fs = 4000;
 
-[b,a] = butter(order,fc/(fs/2),'low');
+[b,a] = butter(order,fc/(fs/2),'high');
 
 % Split the filter coefficients into second-order sections
 [sos, ~] = tf2sos(b, a);
@@ -20,7 +20,7 @@ denominatorFilename = 'denominator_coeffs.h';
 % Open the first C file for writing
 fid = fopen(numeratorFilename, 'w');
 
-fprintf(fid, 'const double numerator_coeffs[%d][2] = {\n', size(sos, 1));
+fprintf(fid, 'double numerator_coeffs[%d][3] = {\n', size(sos, 1));
 for i = 1:size(sos, 1)
     fprintf(fid, '    {%.15f, %.15f, %.15f}', sos(i,1) , sos(i, 2), sos(i, 3));
     if i < size(sos, 1)
@@ -35,7 +35,7 @@ fclose(fid);
 
 fid = fopen(denominatorFilename, 'w');
 
-fprintf(fid, 'const double denominator_coeffs[%d][3] = {\n', size(sos, 1));
+fprintf(fid, 'double denominator_coeffs[%d][2] = {\n', size(sos, 1));
 for i = 1:size(sos, 1)
     fprintf(fid, '    {%.15f, %.15f}', sos(i, 5), sos(i, 6));
     if i < size(sos, 1)

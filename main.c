@@ -80,10 +80,10 @@ int main() {
 //    0.008891029945241,-0.004245630750047, -0.00485120373109,-0.003471276445115
 // }; //lowpass filter //lowpass filter
  
-    //Apply the filter to the noise signal
-    // for (int i = 0; i < num_samples; i++) {
-    //     output_signal[i] = FIRFILTER_Update(fil, noise_signal[i], iresp);
-    // }
+// //     //Apply the filter to the noise signal
+//     for (int i = 0; i < num_samples; i++) {
+//         output_signal[i] = FIRFILTER_Update(fil, noise_signal[i], iresp);
+//     }
 
      //Apply the filter to the noise signal
     for (int i = 0; i < num_samples; i++) {
