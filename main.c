@@ -46,7 +46,7 @@ int main() {
     if (noise_signal == NULL) return 1;
     generate_noise(noise_signal, num_samples);
 
-    //create filters array
+    // create filters array
     // SecondOrderIIR **fil = (SecondOrderIIR **)malloc(NUM_FILTERS * sizeof(SecondOrderIIR *));
     // if (fil == NULL) {return 1;}
 
@@ -64,7 +64,6 @@ int main() {
     double b[] = {0.131106439916626,0.262212879833252,0.131106439916626};
     SecondOrderIIR_Init(fil, b, a);
 
-     //lowpass filter
 
  
     //  FIRFilter *fil = (FIRFilter *)malloc(sizeof(FIRFilter));
