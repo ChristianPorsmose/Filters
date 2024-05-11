@@ -1,5 +1,5 @@
 % Define the filter parameters
-order = 2;
+order = 12;
 
 [b,a] = butter(order,0.6,'low');
 
@@ -20,7 +20,7 @@ fid = fopen(numeratorFilename, 'w');
 
 fprintf(fid, 'double numerator_coeffs[%d][3] = {\n', size(sos, 1));
 for i = 1:size(sos, 1)
-    fprintf(fid, '    {%.15f, %.15f, %.15f}', sos(i,1) , sos(i, 2), sos(i, 3));
+    fprintf(fid, '    {%.15f, %.15f, %.15f}' , sos(i,1), sos(i, 2), sos(i, 3));
     if i < size(sos, 1)
         fprintf(fid, ',\n');
     else
@@ -33,9 +33,9 @@ fclose(fid);
 
 fid = fopen(denominatorFilename, 'w');
 
-fprintf(fid, 'double denominator_coeffs[%d][2] = {\n', size(sos, 1));
+fprintf(fid, 'double denumerator_coeffs[%d][2] = {\n', size(sos, 1));
 for i = 1:size(sos, 1)
-    fprintf(fid, '    {%.15f, %.15f}', sos(i, 5), sos(i, 6));
+    fprintf(fid, '    { %.15f, %.15f}',sos(i, 5), sos(i, 6));
     if i < size(sos, 1)
         fprintf(fid, ',\n');
     else
