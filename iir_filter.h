@@ -8,7 +8,7 @@
 
 typedef struct
 {
-    double buf[IIR_POLES];
+    double buf[IIR_ZEROES];
     int bufIndex;
     double b[IIR_ZEROES];
     double a[IIR_POLES];

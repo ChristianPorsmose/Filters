@@ -44,12 +44,11 @@ int main() {
     int num_samples = SAMPLE_RATE * DURATION;
     double *noise_signal = (double *)malloc(num_samples * sizeof(double));
     if (noise_signal == NULL) return 1;
-    //create filters
+    generate_noise(noise_signal, num_samples);
+
+    //create filters array
     SecondOrderIIR **fil = (SecondOrderIIR **)malloc(NUM_FILTERS * sizeof(SecondOrderIIR *));
-    if (fil == NULL) {
-        fprintf(stderr, "Memory allocation failed\n");
-        return 1;
-    }
+    if (fil == NULL) {return 1;}
 
     for (int i = 0; i < NUM_FILTERS; i++) {
         fil[i] = (SecondOrderIIR *)malloc(sizeof(SecondOrderIIR));
@@ -57,11 +56,26 @@ int main() {
         SecondOrderIIR_Init(fil[i], numerator_coeffs[i], denominator_coeffs[i]);
     }
 
-    generate_noise(noise_signal, num_samples);
+    // double iresp[] = {
+    // -0.003471276445115, -0.00485120373109,-0.004245630750047, 0.008891029945241,
+    //     0.04423731627554,   0.1002331073527,   0.1601002781948,   0.1991063791579,
+    //     0.1991063791579,   0.1601002781948,   0.1002331073527,  0.04423731627554,
+    // 0.008891029945241,-0.004245630750047, -0.00485120373109,-0.003471276445115
+    // }; //lowpass filter
 
+ 
+    //  FIRFilter *fil = (FIRFilter *)malloc(sizeof(FIRFilter));
+    //     if (fil == NULL) {  return 1; }
+    // FIRFilter_Init(fil);
+          
     //create output signal
     double *output_signal = (double *)malloc(num_samples * sizeof(double));
     if (output_signal == NULL) return 1;
+ 
+    //Apply the filter to the noise signal
+    // for (int i = 0; i < num_samples; i++) {
+    //     output_signal[i] = FIRFILTER_Update(fil, noise_signal[i], iresp);
+    // }
 
      //Apply the filter to the noise signal
     for (int i = 0; i < num_samples; i++) {
@@ -73,22 +87,22 @@ int main() {
     if (f == NULL) return 1;
     for (int i = 0; i < num_samples; i++) {
         fprintf(f, "%f\n", noise_signal[i]);
-    
-    }
-    fclose(f);
+    } fclose(f);
 
     f = fopen("iir_out.dat", "w+");
     if (f == NULL) return 1;
     for (int i = 0; i < num_samples; i++) {
         fprintf(f, "%f\n", output_signal[i]);
-    }
+    } fclose(f);
 
 
-    //free memory
+    //free array memory
     for (int i = 0; i < NUM_FILTERS; i++) {
         free(fil[i]);
     }  
-    fclose(f);
+
+    free(fil);
+    
     free(output_signal);
     free(noise_signal);
     return 0;

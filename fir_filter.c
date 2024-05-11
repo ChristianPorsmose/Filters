@@ -21,12 +21,7 @@ double FIRFILTER_Update(FIRFilter *fil, double input, double *iresp) {
     double out = 0.0;
     //convolve 
     for (int i=0; i < FIR_FILTER_LENGTH; i++) {
-        if (shift > 0) {
-            shift--;
-        }
-        else {
-            shift = FIR_FILTER_LENGTH - 1;
-        }
+        shift = (shift > 0) ? shift - 1 : FIR_FILTER_LENGTH - 1;
         out += iresp[i] * fil->buf[shift]; 
     }
     return out;
