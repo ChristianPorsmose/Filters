@@ -57,40 +57,40 @@ int main() {
     // }
 
     //create a simple second order IIR filter
-    SecondOrderIIR *fil = (SecondOrderIIR *)malloc(sizeof(SecondOrderIIR));
-    if (fil == NULL) return 1;
+    // SecondOrderIIR *fil = (SecondOrderIIR *)malloc(sizeof(SecondOrderIIR));
+    // if (fil == NULL) return 1;
 
-    SecondOrderIIR_Init(fil, numerator_coeffs[0], denominator_coeffs[0]);
+    // SecondOrderIIR_Init(fil, numerator_coeffs[0], denominator_coeffs[0]);
 
-    // double iresp[] = {
-    // -0.003471276445115, -0.00485120373109,-0.004245630750047, 0.008891029945241,
-    //     0.04423731627554,   0.1002331073527,   0.1601002781948,   0.1991063791579,
-    //     0.1991063791579,   0.1601002781948,   0.1002331073527,  0.04423731627554,
-    // 0.008891029945241,-0.004245630750047, -0.00485120373109,-0.003471276445115
-    // }; //lowpass filter
+    double iresp[] = {
+    -0.003471276445115, -0.00485120373109,-0.004245630750047, 0.008891029945241,
+        0.04423731627554,   0.1002331073527,   0.1601002781948,   0.1991063791579,
+        0.1991063791579,   0.1601002781948,   0.1002331073527,  0.04423731627554,
+    0.008891029945241,-0.004245630750047, -0.00485120373109,-0.003471276445115
+    }; //lowpass filter
 
  
-    //  FIRFilter *fil = (FIRFilter *)malloc(sizeof(FIRFilter));
-    //     if (fil == NULL) {  return 1; }
-    // FIRFilter_Init(fil);
+     FIRFilter *fil = (FIRFilter *)malloc(sizeof(FIRFilter));
+        if (fil == NULL) {  return 1; }
+    FIRFilter_Init(fil);
           
     //create output signal
     double *output_signal = (double *)malloc(num_samples * sizeof(double));
     if (output_signal == NULL) return 1;
  
     //Apply the filter to the noise signal
-    // for (int i = 0; i < num_samples; i++) {
-    //     output_signal[i] = FIRFILTER_Update(fil, noise_signal[i], iresp);
-    // }
+    for (int i = 0; i < num_samples; i++) {
+        output_signal[i] = FIRFILTER_Update(fil, noise_signal[i], iresp);
+    }
 
      //Apply the filter to the noise signal
     // for (int i = 0; i < num_samples; i++) {
     //     output_signal[i] = NOrderIIR_Update(fil, noise_signal[i], NUM_FILTERS);
     // }
 
-    for (int i = 0; i < num_samples; i++) {
-        output_signal[i] = SecondOrderIIR_Update(fil, noise_signal[i]);
-    }
+    // for (int i = 0; i < num_samples; i++) {
+    //     output_signal[i] = SecondOrderIIR_Update(fil, noise_signal[i]);
+    // }
 
     //write input and output signals to file
     FILE *f = fopen("iir_in.dat", "w+");
