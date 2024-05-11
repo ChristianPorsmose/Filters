@@ -13,7 +13,7 @@ double FIRFILTER_Update(FIRFilter *fil, double input, double *iresp) {
     fil->buf[fil->bufIndex] = input;
 
     //increment buf + check for bounds
-    fil->bufIndex = (fil->bufIndex < 0) ? fil->bufIndex=FIR_FILTER_LENGTH-1 : fil->bufIndex-1;
+    fil->bufIndex = (fil->bufIndex == 0) ? fil->bufIndex=FIR_FILTER_LENGTH-1 : fil->bufIndex-1;
 
     double out = 0.0;
     //convolve 
