@@ -1,9 +1,9 @@
 % Define the filter parameters
 order = 12;
 fc = 800;
-fs = 2000;
+fs = 4000;
 
-[b,a] = butter(order,fc/(fs/2));
+[b,a] = butter(order,fc/(fs/2),'low');
 
 % Split the filter coefficients into second-order sections
 [sos, ~] = tf2sos(b, a);
