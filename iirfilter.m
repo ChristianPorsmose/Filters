@@ -1,6 +1,6 @@
 % Define the filter parameters
 order = 12;
-fc = 300;
+fc = 800;
 fs = 2000;
 
 [b,a] = butter(order,fc/(fs/2));
