@@ -88,7 +88,7 @@ int main() {
 
      //Apply the filter to the noise signal
     for (int i = 0; i < num_samples; i++) {
-        output_signal[i] = NOrderIIR_Update(fil, noise_signal[i], NUM_FILTERS);
+        output_signal[i] = NOrderIIR_Update(fil, noise_signal[i], NUM_FILTERS,0.0443706184763527);
     }
 
     // for (int i = 0; i < num_samples; i++) {

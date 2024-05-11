@@ -24,8 +24,8 @@ typedef struct
 void FirstOrderIIR_Init(FirstOrderIIR *fil, double a);
 double FirstOrderIIR_Update(FirstOrderIIR *fil, double inp);
 void SecondOrderIIR_Init(SecondOrderIIR *fil, double *b, double *a);
-double SecondOrderIIR_Update(SecondOrderIIR *fil, double inp);
-double NOrderIIR_Update(SecondOrderIIR **fil, double inp, int order); 
+double SecondOrderIIR_Update(SecondOrderIIR *fil, double inp, double gain);
+double NOrderIIR_Update(SecondOrderIIR **fil, double inp, int order, double gain); 
 void NOrderIIR_Init(SecondOrderIIR **fil, double **b, double **a, int order);
 
 #endif

@@ -1,12 +1,12 @@
 % Define the filter parameters
 order = 12;
 
-[b,a] = butter(order,0.6,'low');
+[b,a] = butter(order,0.75,'low');
 
 % Split the filter coefficients into second-order sections
-[sos, ~] = tf2sos(b, a);
+[sos, g] = tf2sos(b, a);
 
-freqz(b,a,[],fs)
+
 
 
 %%
