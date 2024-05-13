@@ -12,8 +12,7 @@ void FIRFilter_Init(FIRFilter *fil) {
 double FIRFILTER_Update(FIRFilter *fil, double input, double *iresp) {
     //update buf with newest input
     fil->buf[fil->bufIndex] = input;
-
-
+    
     double out = 0.0;
     //convolve 
     for (int i=0; i < FIR_FILTER_LENGTH; i++) {
@@ -24,4 +23,5 @@ double FIRFILTER_Update(FIRFilter *fil, double input, double *iresp) {
 
     return out;
 }
+
 

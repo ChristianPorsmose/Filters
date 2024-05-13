@@ -11,8 +11,8 @@ with open("iir_out.dat", "r") as f:
 
 #plot the first 100 samples of the input signal and output signal
 plt.figure()
-plt.plot(input_signal, label="Input Signal")
-plt.plot(output_signal, label="Output Signal")
+plt.plot(input_signal[:100], label="Input Signal")
+plt.plot(output_signal[:100], label="Output Signal")
 plt.xlabel("Sample")
 plt.ylabel("Amplitude")
 plt.title("Input and Output Signal")

@@ -47,28 +47,28 @@ int main() {
     generate_noise(noise_signal, num_samples);
 
     // create filters array
-    SecondOrderIIR **fil = (SecondOrderIIR **)malloc(NUM_FILTERS * sizeof(SecondOrderIIR *));
-    if (fil == NULL) {return 1;}
+    // SecondOrderIIR **fil = (SecondOrderIIR **)malloc(NUM_FILTERS * sizeof(SecondOrderIIR *));
+    // if (fil == NULL) {return 1;}
 
-    for (int i = 0; i < NUM_FILTERS; i++) {
-        fil[i] = (SecondOrderIIR *)malloc(sizeof(SecondOrderIIR));
-        if (fil[i] == NULL) return 1;
-        SecondOrderIIR_Init(fil[i], numerator_coeffs[i], denumerator_coeffs[i]);
-    }
+    // for (int i = 0; i < NUM_FILTERS; i++) {
+    //     fil[i] = (SecondOrderIIR *)malloc(sizeof(SecondOrderIIR));
+    //     if (fil[i] == NULL) return 1;
+    //     SecondOrderIIR_Init(fil[i], numerator_coeffs[i], denumerator_coeffs[i]);
+    // }'
 
     //create a simple second order IIR filter
-    // SecondOrderIIR *fil = (SecondOrderIIR *)malloc(sizeof(SecondOrderIIR));
-    // if (fil == NULL) return 1;
+    SecondOrderIIR *fil = (SecondOrderIIR *)malloc(sizeof(SecondOrderIIR));
+    if (fil == NULL) return 1;
 
-    // double a[] = {-0.7478, 0.2722};
-    // double b[] = {0.131106439916626,0.262212879833252,0.131106439916626};
-    // SecondOrderIIR_Init(fil, b, a);
+    double a[] = {-0.7478, 0.2722};
+    double b[] = {0.131106439916626,0.262212879833252,0.131106439916626};
+    SecondOrderIIR_Init(fil, b, a);
 
 
  
-    //  FIRFilter *fil = (FIRFilter *)malloc(sizeof(FIRFilter));
-    //     if (fil == NULL) {  return 1; }
-    // FIRFilter_Init(fil);
+    // FIRFilter *fil = (FIRFilter *)malloc(sizeof(FIRFilter));
+    //      if (fil == NULL) {  return 1; }
+    //  FIRFilter_Init(fil);
           
     //create output signal
     double *output_signal = (double *)malloc(num_samples * sizeof(double));
@@ -76,24 +76,24 @@ int main() {
 
 //         double iresp[] = {
 //   -0.003471276445115, -0.00485120373109,-0.004245630750047, 0.008891029945241,
-//     0.04423731627554,   0.1002331073527,   0.1601002781948,   0.1991063791579,
-//      0.1991063791579,   0.1601002781948,   0.1002331073527,  0.04423731627554,
+//      0.04423731627554,   0.1002331073527,   0.1601002781948,   0.1991063791579,
+//       0.1991063791579,   0.1601002781948,   0.1002331073527,  0.04423731627554,
 //    0.008891029945241,-0.004245630750047, -0.00485120373109,-0.003471276445115
-// }; //lowpass filter //lowpass filter
+//  }; //lowpass filter //lowpass filter
  
-// //     //Apply the filter to the noise signal
+//      //Apply the filter to the noise signal
 //     for (int i = 0; i < num_samples; i++) {
 //         output_signal[i] = FIRFILTER_Update(fil, noise_signal[i], iresp);
-//     }
+//      }
 
      //Apply the filter to the noise signal
-    for (int i = 0; i < num_samples; i++) {
-        output_signal[i] = NOrderIIR_Update(fil, noise_signal[i], NUM_FILTERS,0.0443706184763527);
-    }
-
     // for (int i = 0; i < num_samples; i++) {
-    //     output_signal[i] = SecondOrderIIR_Update(fil, noise_signal[i]);
+    //     output_signal[i] = NOrderIIR_Update(fil, noise_signal[i], NUM_FILTERS,0.0443706184763527);
     // }
+
+    for (int i = 0; i < num_samples; i++) {
+         output_signal[i] = SecondOrderIIR_Update(fil, noise_signal[i], 1);
+     }
 
 
     //first order IIR filter
@@ -120,9 +120,9 @@ int main() {
 
 
     //free array memory
-    for (int i = 0; i < NUM_FILTERS; i++) {
-        free(fil[i]);
-    }  
+    // for (int i = 0; i < NUM_FILTERS; i++) {
+    //     free(fil[i]);
+    // }  
 
     free(fil);
     free(output_signal);
